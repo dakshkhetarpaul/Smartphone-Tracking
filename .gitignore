@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual envs
+.venv*/
+venv/
+env/
+
+# Ultralytics / runs
+runs/
+
+# Large artifacts
+*.pt
+*.onnx
+*.tflite
+*.md5
+*.mp4
+*.avi
+*.mov
+
+# OS noise
+.DS_Store
