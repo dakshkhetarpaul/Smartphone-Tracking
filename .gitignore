@@ -18,6 +18,9 @@ runs/
 *.mp4
 *.avi
 *.mov
+*.json
+*.csv
+
 
 # OS noise
 .DS_Store

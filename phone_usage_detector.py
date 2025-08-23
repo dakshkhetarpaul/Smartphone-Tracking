@@ -154,11 +154,13 @@ def attach_original_audio(src_path, silent_video_path, out_path):
         "ffmpeg", "-y",
         "-i", silent_video_path,
         "-i", src_path,
-        "-map", "0:v:0", "-map", "1:a:0",
-        "-c:v", "copy", "-c:a", "copy",
+        "-map", "0:v:0", "-map", "1:a:0?",
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
+        "-c:a", "aac", "-b:a", "192k",
         "-shortest",
         out_path
     ]
+    
     try:
         subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
@@ -342,7 +344,18 @@ def main():
     ap.add_argument("--imgsz", type=int, default=640, help="Inference image size (smaller = faster)")
     ap.add_argument("--device", type=str, default="auto", help="cuda | cpu | mps | auto")
     ap.add_argument("--fps", type=float, default=None, help="Override FPS if unreadable")
+    
+
+    ap.add_argument("--loose", action="store_true", help="Loosen handheld heuristics for partial/occluded phones")
+    ap.add_argument("--draw-static", action="store_true", help="Also draw static/unused phones in orange for debugging")
+    ap.add_argument("--hand-dist-ratio", type=float, default=0.10, help="Diag ratio for hand-to-phone distance")
+    ap.add_argument("--hand-lap-dist-ratio", type=float, default=0.12, help="Diag ratio for hand distance when on-lap")
+    ap.add_argument("--face-expand", type=float, default=1.8, help="Scale to expand face bbox when checking 'near face'")
+    ap.add_argument("--lap-margin-ratio", type=float, default=0.08, help="Screen height ratio to expand lower third band")
+    ap.add_argument("--phone-expand", type=float, default=1.4, help="Scale to expand phone bbox for proximity tests")
+
     args = ap.parse_args()
+
     process_video(args)
 
 if __name__ == "__main__":
