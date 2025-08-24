@@ -353,6 +353,13 @@ def main():
     ap.add_argument("--face-expand", type=float, default=1.8, help="Scale to expand face bbox when checking 'near face'")
     ap.add_argument("--lap-margin-ratio", type=float, default=0.08, help="Screen height ratio to expand lower third band")
     ap.add_argument("--phone-expand", type=float, default=1.4, help="Scale to expand phone bbox for proximity tests")
+    
+    ap.add_argument(
+    "--stickiness",
+    type=int,
+    default=0,
+    help="Number of frames to keep phone box active after it disappears (temporal smoothing)."
+    )
 
     args = ap.parse_args()
 
